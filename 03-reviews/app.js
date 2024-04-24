@@ -44,41 +44,44 @@ let currentItem = 0;
 
 // load initial item
 window.addEventListener("DOMContentLoaded", function () {
+  ShowPerson(currentItem);
+});
+
+//generator based on current item
+function ShowPerson() {
   const item = reviews[currentItem];
   img.src = item.img;
   author.textContent = item.name;
   job.textContent = item.job;
   info.textContent = item.text;
-});
-
-// show person based on item
-function showPerson(person) {
-  const item = reviews[person];
-  img.src = item.img;
-  author.textContent = item.name;
-  job.textContent = item.job;
-  info.textContent = item.text;
 }
-// show next person
+
+//Show next person
 nextBtn.addEventListener("click", function () {
   currentItem++;
   if (currentItem > reviews.length - 1) {
     currentItem = 0;
   }
-  showPerson(currentItem);
+  ShowPerson();
 });
-// show prev person
+
+//Show previous peson
 prevBtn.addEventListener("click", function () {
   currentItem--;
   if (currentItem < 0) {
     currentItem = reviews.length - 1;
   }
-  showPerson(currentItem);
+  ShowPerson();
 });
-// show random person
-randomBtn.addEventListener("click", function () {
-  console.log("hello");
 
-  currentItem = Math.floor(Math.random() * reviews.length);
-  showPerson(currentItem);
+//generate random number
+function generateNum() {
+  return Math.floor(Math.random() * reviews.length);
+}
+
+//surprise me with different reviews
+randomBtn.addEventListener("click", function () {
+  currentItem = generateNum();
+  console.log(currentItem);
+  ShowPerson();
 });
