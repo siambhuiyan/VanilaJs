@@ -71,4 +71,79 @@ const menu = [
     img: "./images/item-9.jpeg",
     desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
   },
+  {
+    id: 10,
+    title: "Steak dinner",
+    category: "dinner",
+    price: 30.99,
+    img: "./images/item-10.jpeg",
+    desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
+  },
 ];
+
+const sectionCenter = document.querySelector(`.section-center`);
+const filterBtns = document.querySelectorAll(".filter-btn");
+const btnContainer = document.querySelector(".btn-container");
+
+//load  items to the DOM
+window.addEventListener("DOMContentLoaded", function () {
+  // console.log("Shake and bake");
+  displayMenuItems(menu);
+
+  //get unique categories
+  const categories = menu.map(function (item) {
+    return item.category;
+  });
+  console.log(categories);
+  const uniqueItems = new Set(categories);
+  const uniqueCate = Array.from(uniqueItems);
+  console.log(uniqueCate);
+  //iterate over categories return buttons
+
+  let displayMenu = uniqueCate.map(function (cate) {
+    console.log(cate);
+    return `<button class="filter-btn" data-id=${cate} type="button">${cate}</button>`;
+  });
+  displayMenu = displayMenu.join("");
+  console.log(displayMenu);
+  //make sure to select buttons when they are available.
+  btnContainer.innerHTML = displayMenu;
+});
+
+//display menu item function
+function displayMenuItems(menuItem) {
+  let displayMenu = menuItem.map(function (item) {
+    return `<article class="menu-item">
+          <img src=${item.img} class="photo" alt="${item.title}" />
+          <div class="item-info">
+            <header>
+              <h4>${item.title}</h4>
+              <h4 class="price">$${item.price}</h4>
+            </header>
+            <p class="item-text">
+             ${item.desc}
+            </p>
+          </div>
+        </article>`;
+  });
+  // console.log(displayMenu);
+  displayMenu = displayMenu.join("");
+  sectionCenter.innerHTML = displayMenu;
+  // console.log(displayMenu);
+}
+
+//filter items
+filterBtns.forEach(function (btn) {
+  btn.addEventListener("click", function (e) {
+    const currentCate = e.currentTarget.dataset.id;
+    console.log(currentCate);
+    const menuCate = menu.filter(
+      (menuItem) => menuItem.category === currentCate
+    );
+    if (currentCate == "all") {
+      displayMenuItems(menu);
+    } else {
+      displayMenuItems(menuCate);
+    }
+  });
+});
