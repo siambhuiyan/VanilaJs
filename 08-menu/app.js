@@ -82,32 +82,23 @@ const menu = [
 ];
 
 const sectionCenter = document.querySelector(`.section-center`);
-const filterBtns = document.querySelectorAll(".filter-btn");
+
 const btnContainer = document.querySelector(".btn-container");
 
 //load  items to the DOM
 window.addEventListener("DOMContentLoaded", function () {
   // console.log("Shake and bake");
   displayMenuItems(menu);
-
-  //get unique categories
-  const categories = menu.map(function (item) {
-    return item.category;
-  });
-  console.log(categories);
-  const uniqueItems = new Set(categories);
-  const uniqueCate = Array.from(uniqueItems);
-  console.log(uniqueCate);
-  //iterate over categories return buttons
-
-  let displayMenu = uniqueCate.map(function (cate) {
-    console.log(cate);
-    return `<button class="filter-btn" data-id=${cate} type="button">${cate}</button>`;
-  });
-  displayMenu = displayMenu.join("");
-  console.log(displayMenu);
-  //make sure to select buttons when they are available.
-  btnContainer.innerHTML = displayMenu;
+  displayMenuButtons();
+  /*My approach
+  // const categories = menu.map(function (item) {
+  //   return item.category;
+  // });
+  // console.log(categories);
+  // const uniqueItems = new Set(categories);
+  // const uniqueCate = Array.from(uniqueItems);
+  // console.log(uniqueCate);
+  //iterate over categories return buttons*/
 });
 
 //display menu item function
@@ -132,18 +123,40 @@ function displayMenuItems(menuItem) {
   // console.log(displayMenu);
 }
 
-//filter items
-filterBtns.forEach(function (btn) {
-  btn.addEventListener("click", function (e) {
-    const currentCate = e.currentTarget.dataset.id;
-    console.log(currentCate);
-    const menuCate = menu.filter(
-      (menuItem) => menuItem.category === currentCate
-    );
-    if (currentCate == "all") {
-      displayMenuItems(menu);
-    } else {
-      displayMenuItems(menuCate);
-    }
+//display buttons for category
+
+function displayMenuButtons() {
+  // Get unique items  from array using reduce
+  const categories = menu.reduce(
+    function (values, item) {
+      if (!values.includes(item.category)) {
+        values.push(item.category);
+      }
+      return values;
+    },
+    ["all"]
+  );
+  const categoryBtns = categories
+    .map(function (cate) {
+      return `<button class="filter-btn" data-id=${cate} type="button">${cate}</button>`;
+    })
+    .join("");
+  //make sure to select buttons when they are available.
+  btnContainer.innerHTML = categoryBtns;
+  const filterBtns = document.querySelectorAll(".filter-btn");
+  //filter items
+  filterBtns.forEach(function (btn) {
+    btn.addEventListener("click", function (e) {
+      const currentCate = e.currentTarget.dataset.id;
+      console.log(currentCate);
+      const menuCate = menu.filter(
+        (menuItem) => menuItem.category === currentCate
+      );
+      if (currentCate == "all") {
+        displayMenuItems(menu);
+      } else {
+        displayMenuItems(menuCate);
+      }
+    });
   });
-});
+}
