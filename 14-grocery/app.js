@@ -42,6 +42,10 @@ function addItem(e) {
                 <i class="fas fa-trash"></i>
               </button>
             </div>`;
+    const deleteBtn = element.querySelector(".delete-btn");
+    const editBtn = element.querySelector(".edit-btn");
+    deleteBtn.addEventListener("click", deleteItem);
+    editBtn.addEventListener("click", editItem);
     //append child
     list.appendChild(element);
     //display alert
@@ -78,6 +82,31 @@ function clearItems() {
   setBackTofault();
   // localStorage.remove('list');
 }
+//delete Items
+function deleteItem(e) {
+  const element = e.currentTarget.parentElement.parentElement;
+  const id = element.dataset.id;
+
+  list.removeChild(element);
+  if (list.children.length === 0) {
+    container.classList.remove("show-container");
+  }
+  displayAlert("item removed", "danger");
+  setBackTofault();
+  //remove from local storage
+  // removeFromLocalStorage(id);
+}
+//edit function
+function editItem(e) {
+  const element = e.currentTarget.parentElement.parentElement;
+  //set edit item
+  editElement = e.currentTarget.parentElement.previousElementSibling;
+  //set form value
+  grocery.value = editElement.innerHTML;
+  editFlag = true;
+  editId = element.dataset.id;
+  submitBtn.textContent = "edit";
+}
 // set back to default
 function setBackTofault() {
   grocery.value = "";
@@ -89,4 +118,5 @@ function setBackTofault() {
 function addToLocalStorage(id, value) {
   console.log("default storage system");
 }
+function removeFromLocalStorage(id) {}
 // ****** SETUP ITEMS **********
