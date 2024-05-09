@@ -57,7 +57,11 @@ function addItem(e) {
     //set back to default
     setBackTofault();
   } else if (value && editFlag) {
-    console.log("editing");
+    editElement.innerHTML = value;
+    displayAlert("value changed", "success");
+    //edit local storage
+    editLocalStorage(editId, value);
+    setBackTofault();
   } else {
     displayAlert("Add some task", "danger");
   }
@@ -119,4 +123,15 @@ function addToLocalStorage(id, value) {
   console.log("default storage system");
 }
 function removeFromLocalStorage(id) {}
+function editLocalStorage(id, value) {}
+//local storage API
+//setItem
+//getItem
+//removeItem
+//save as stirngs
+localStorage.setItem("orange", JSON.stringify(["item", "item2"]));
+
+const oranges = JSON.parse(localStorage.getItem("orange"));
+console.log(oranges);
+localStorage.removeItem("orange");
 // ****** SETUP ITEMS **********
